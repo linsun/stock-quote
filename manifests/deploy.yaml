@@ -27,6 +27,8 @@ spec:
     metadata:
       labels:
         app: stock-quote
+        version: v1
+        solution: stock-trader
       annotations:
         prometheus.io/scrape: 'true'
         prometheus.io/port: "9080"
