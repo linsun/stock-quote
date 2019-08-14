@@ -38,13 +38,15 @@ spec:
 #       image: registry.ng.bluemix.net/stock_trader/stock-quote:latest # IBM Kubernetes Service
 #       Note: this manifests/deploy.yaml will be used when we want to deploy this directly using kubectl or a helm chart. 
 #             Microclimate uses the Charts folder so we can actually have both options
-        image: ibmstocktrader/stock-quote:latest # DockerHub
+        image: linsun/stock-quote:latest
+#        image: ibmstocktrader/stock-quote:latest # DockerHub
         env:
           - name: REDIS_URL
             valueFrom:
               secretKeyRef:
                 name: redis
                 key: url
+                optional: true
           - name: CACHE_INTERVAL
             valueFrom:
               secretKeyRef:
@@ -138,19 +140,3 @@ spec:
       targetPort: 9443
   selector:
     app: stock-quote
----
-#Deploy the autoscaler
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscaler
-metadata:
-  name: stock-quote-hpa
-  labels:
-    solution: stock-trader
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: stock-quote
-  maxReplicas: 10
-  minReplicas: 2
-  targetCPUUtilizationPercentage: 60

@@ -158,9 +158,12 @@ public class StockQuote extends Application {
 
 			if (jedisPool == null) { //the pool is static; the connections within the pool are obtained as needed
 				String redis_url = System.getenv("REDIS_URL");
-				URI jedisURI = new URI(redis_url);
-				logger.info("Initializing Redis pool using URL: "+redis_url);
-				jedisPool = new JedisPool(jedisURI);
+				
+				if (redis_url != null) {
+					URI jedisURI = new URI(redis_url);
+				    logger.info("Initializing Redis pool using URL: "+redis_url);
+				    jedisPool = new JedisPool(jedisURI);
+				}
 			}
 
 			try {
